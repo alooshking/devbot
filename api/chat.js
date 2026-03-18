@@ -16,6 +16,9 @@ module.exports = async function handler(req, res) {
       messages.forEach(m => allMessages.push(m));
     }
 
+    console.log('Messages count:', allMessages.length);
+    console.log('First message:', JSON.stringify(allMessages[0]));
+
     const apiKey = process.env.OPENROUTER_API_KEY;
 
     const response = await fetch('https://openrouter.ai/api/v1/chat/completions', {
@@ -34,9 +37,11 @@ module.exports = async function handler(req, res) {
     });
 
     const data = await response.json();
+    console.log('Full response:', JSON.stringify(data));
     const text = data.choices?.[0]?.message?.content || 'حدث خطأ';
     res.status(200).json({ content: [{ text }] });
   } catch (error) {
+    console.error('Error:', error.message);
     res.status(500).json({ error: error.message });
   }
 }
