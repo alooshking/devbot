@@ -30,7 +30,7 @@ module.exports = async function handler(req, res) {
         'X-Title': 'DevBot'
       },
       body: JSON.stringify({
-        model: 'google/gemma-3-27b-it:free',
+        model: 'deepseek/deepseek-r1:free',
         messages: allMessages,
         max_tokens: max_tokens || 1000
       })
