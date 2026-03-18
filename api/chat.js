@@ -9,36 +9,33 @@ module.exports = async function handler(req, res) {
   try {
     const rawBody = typeof req.body === 'string' ? JSON.parse(req.body) : req.body;
     const { messages, system, max_tokens } = rawBody;
-    
-    const allMessages = [];
-    if (system) allMessages.push({ role: 'system', content: system });
+
+    const contents = [];
     if (messages && messages.length > 0) {
-      messages.forEach(m => allMessages.push(m));
+      messages.forEach(m => {
+        contents.push({
+          role: m.role === 'assistant' ? 'model' : 'user',
+          parts: [{ text: m.content }]
+        });
+      });
     }
 
-    console.log('Messages count:', allMessages.length);
-    console.log('First message:', JSON.stringify(allMessages[0]));
+    const apiKey = process.env.GEMINI_API_KEY;
+    console.log('Key exists:', !!apiKey);
 
-    const apiKey = process.env.OPENROUTER_API_KEY;
-
-    const response = await fetch('https://openrouter.ai/api/v1/chat/completions', {
+    const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`, {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': 'Bearer ' + apiKey,
-        'HTTP-Referer': 'https://devbot-vert.vercel.app',
-        'X-Title': 'DevBot'
-      },
+      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        model: 'deepseek/deepseek-r1:free',
-        messages: allMessages,
-        max_tokens: max_tokens || 1000
+        system_instruction: system ? { parts: [{ text: system }] } : undefined,
+        contents: contents,
+        generationConfig: { maxOutputTokens: max_tokens || 1000 }
       })
     });
 
     const data = await response.json();
-    console.log('Full response:', JSON.stringify(data));
-    const text = data.choices?.[0]?.message?.content || 'حدث خطأ';
+    console.log('Response:', JSON.stringify(data));
+    const text = data.candidates?.[0]?.content?.parts?.[0]?.text || 'حدث خطأ';
     res.status(200).json({ content: [{ text }] });
   } catch (error) {
     console.error('Error:', error.message);
