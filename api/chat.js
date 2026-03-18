@@ -8,13 +8,14 @@ module.exports = async function handler(req, res) {
 
   try {
     const { messages, system, max_tokens } = req.body;
-
-    const formattedMessages = system 
-      ? [{ role: 'system', content: system }, ...messages]
-      : messages;
+    
+    const allMessages = [];
+    if (system) allMessages.push({ role: 'system', content: system });
+    if (messages && messages.length > 0) {
+      messages.forEach(m => allMessages.push(m));
+    }
 
     const apiKey = process.env.OPENROUTER_API_KEY;
-    console.log('Key exists:', !!apiKey);
 
     const response = await fetch('https://openrouter.ai/api/v1/chat/completions', {
       method: 'POST',
@@ -26,7 +27,7 @@ module.exports = async function handler(req, res) {
       },
       body: JSON.stringify({
         model: 'meta-llama/llama-3.3-70b-instruct:free',
-        messages: formattedMessages,
+        messages: allMessages,
         max_tokens: max_tokens || 1000
       })
     });
