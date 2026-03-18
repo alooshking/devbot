@@ -13,11 +13,14 @@ module.exports = async function handler(req, res) {
       ? [{ role: 'system', content: system }, ...messages]
       : messages;
 
+    const apiKey = process.env.OPENROUTER_API_KEY;
+    console.log('Key exists:', !!apiKey);
+
     const response = await fetch('https://openrouter.ai/api/v1/chat/completions', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': `Bearer ${process.env.OPENROUTER_API_KEY}`,
+        'Authorization': 'Bearer ' + apiKey,
         'HTTP-Referer': 'https://devbot-vert.vercel.app',
         'X-Title': 'DevBot'
       },
