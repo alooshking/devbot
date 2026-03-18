@@ -776,4 +776,464 @@ textarea::placeholder { color: var(--text3); }
           <div class="lang-btn" onclick="selectLang('from','javascript',this)">JS</div>
           <div class="lang-btn" onclick="selectLang('from','bash',this)">Bash</div>
           <div class="lang-btn" onclick="selectLang('from','java',this)">Java</div>
-          <div class="lang-btn" onclick="selectLang('from','cpp',thi
+          <div class="lang-btn" onclick="selectLang('from','cpp',this)">C++</div>
+          <div class="lang-btn" onclick="selectLang('from','php',this)">PHP</div>
+        </div>
+        <p style="font-size:12px;color:var(--text3);margin-bottom:8px;">إلى:</p>
+        <div class="lang-grid" id="toLangs">
+          <div class="lang-btn" onclick="selectLang('to','python',this)">Python</div>
+          <div class="lang-btn selected" onclick="selectLang('to','javascript',this)">JS</div>
+          <div class="lang-btn" onclick="selectLang('to','bash',this)">Bash</div>
+          <div class="lang-btn" onclick="selectLang('to','java',this)">Java</div>
+          <div class="lang-btn" onclick="selectLang('to','cpp',this)">C++</div>
+          <div class="lang-btn" onclick="selectLang('to','php',this)">PHP</div>
+        </div>
+        <textarea class="code-input" id="convertInput" placeholder="الصق كودك هنا..."></textarea>
+        <button class="action-btn" id="convertBtn" onclick="runTool('convert')">🔄 حوّل الكود</button>
+        <div class="result-box" id="convertResult"></div>
+      </div>
+    </div>
+
+    <!-- Debug Tool -->
+    <div class="tool-workspace" id="workspace-debug" style="display:none">
+      <div class="workspace-header">
+        <span class="workspace-title">🐛 إصلاح الأخطاء</span>
+      </div>
+      <div class="workspace-body">
+        <textarea class="code-input" id="debugInput" placeholder="الصق الكود الذي فيه خطأ..."></textarea>
+        <textarea class="code-input" id="errorInput" placeholder="الصق رسالة الخطأ (اختياري)..." style="height:60px;margin-top:-2px;"></textarea>
+        <button class="action-btn" id="debugBtn" onclick="runTool('debug')">🐛 اكشف الخطأ وأصلحه</button>
+        <div class="result-box" id="debugResult"></div>
+      </div>
+    </div>
+
+    <!-- Explain Tool -->
+    <div class="tool-workspace" id="workspace-explain" style="display:none">
+      <div class="workspace-header">
+        <span class="workspace-title">📖 شرح الكود</span>
+      </div>
+      <div class="workspace-body">
+        <textarea class="code-input" id="explainInput" placeholder="الصق الكود الذي تريد فهمه..."></textarea>
+        <button class="action-btn" id="explainBtn" onclick="runTool('explain')">📖 اشرح لي هذا الكود</button>
+        <div class="result-box" id="explainResult" style="direction:rtl;text-align:right;font-family:'Tajawal',sans-serif;font-size:13px;"></div>
+      </div>
+    </div>
+
+    <!-- Optimize Tool -->
+    <div class="tool-workspace" id="workspace-optimize" style="display:none">
+      <div class="workspace-header">
+        <span class="workspace-title">⚡ تحسين الكود</span>
+      </div>
+      <div class="workspace-body">
+        <textarea class="code-input" id="optimizeInput" placeholder="الصق الكود الذي تريد تحسينه..."></textarea>
+        <button class="action-btn" id="optimizeBtn" onclick="runTool('optimize')">⚡ حسّن كودي</button>
+        <div class="result-box" id="optimizeResult"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== ROADMAP PANEL ===== -->
+<div class="panel" id="panel-roadmap">
+  <div class="roadmap-panel">
+    <div class="roadmap-header">
+      <h2>🗺️ خارطة التعلم</h2>
+      <p>خطة مخصصة من الصفر للاحتراف بالأمن السيبراني</p>
+    </div>
+
+    <p style="font-size:12px;color:var(--text2);margin-bottom:8px;font-weight:700;">مستواك الحالي:</p>
+    <div class="level-select">
+      <div class="level-btn selected" id="lvl-beginner" onclick="selectLevel('beginner')">🌱 مبتدئ</div>
+      <div class="level-btn" id="lvl-intermediate" onclick="selectLevel('intermediate')">🔥 متوسط</div>
+      <div class="level-btn" id="lvl-advanced" onclick="selectLevel('advanced')">💎 متقدم</div>
+    </div>
+
+    <p style="font-size:12px;color:var(--text2);margin-bottom:8px;font-weight:700;">هدفك:</p>
+    <div class="level-select">
+      <div class="level-btn selected" id="goal-security" onclick="selectGoal('security')">🔐 أمن سيبراني</div>
+      <div class="level-btn" id="goal-dev" onclick="selectGoal('dev')">💻 تطوير تطبيقات</div>
+      <div class="level-btn" id="goal-both" onclick="selectGoal('both')">🚀 كلاهما</div>
+    </div>
+
+    <button class="generate-btn" id="generateBtn" onclick="generateRoadmap()">⚡ ابني خارطة التعلم الخاصة بي</button>
+
+    <div class="roadmap-content" id="roadmapContent"></div>
+  </div>
+</div>
+
+<!-- ===== PROJECTS PANEL ===== -->
+<div class="panel" id="panel-projects">
+  <div class="projects-panel">
+    <div class="projects-header">
+      <h2>💡 أفكار مشاريع للتعلم</h2>
+      <p>مشاريع عملية تبني مهاراتك الحقيقية</p>
+    </div>
+
+    <p style="font-size:12px;color:var(--text2);margin-bottom:8px;font-weight:700;">اختر مجالك:</p>
+    <div class="skill-tags" id="skillTags">
+      <div class="skill-tag selected" onclick="toggleSkill(this,'Python')">🐍 Python</div>
+      <div class="skill-tag" onclick="toggleSkill(this,'Bash')">⚙️ Bash</div>
+      <div class="skill-tag" onclick="toggleSkill(this,'أمن سيبراني')">🔐 أمن سيبراني</div>
+      <div class="skill-tag" onclick="toggleSkill(this,'شبكات')">🌐 شبكات</div>
+      <div class="skill-tag" onclick="toggleSkill(this,'تطوير ويب')">🌍 ويب</div>
+      <div class="skill-tag" onclick="toggleSkill(this,'أدوات هجوم')">🛠️ أدوات</div>
+    </div>
+
+    <button class="generate-btn" style="background:linear-gradient(135deg,var(--accent3),#059669);margin-bottom:12px;" onclick="generateProjects()">💡 اقترح مشاريع مناسبة لي</button>
+
+    <div class="projects-list" id="projectsList"></div>
+  </div>
+</div>
+
+</main>
+
+<script>
+// ===== STATE =====
+let chatHistory = [];
+let currentTool = 'convert';
+let selectedLevel = 'beginner';
+let selectedGoal = 'security';
+let selectedSkills = ['Python'];
+let fromLang = 'python', toLang = 'javascript';
+
+// ===== TABS =====
+function switchTab(tab) {
+  document.querySelectorAll('.tab').forEach((t,i) => t.classList.remove('active'));
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+  event.target.closest('.tab').classList.add('active');
+  document.getElementById('panel-' + tab).classList.add('active');
+}
+
+// ===== TOOL SELECTION =====
+function selectTool(tool) {
+  currentTool = tool;
+  document.querySelectorAll('.tool-card').forEach(c => c.classList.remove('active-tool'));
+  document.getElementById('tool-' + tool).classList.add('active-tool');
+  document.querySelectorAll('.tool-workspace').forEach(w => w.style.display = 'none');
+  document.getElementById('workspace-' + tool).style.display = 'block';
+}
+
+function selectLang(type, lang, el) {
+  const container = type === 'from' ? 'fromLangs' : 'toLangs';
+  document.querySelectorAll('#' + container + ' .lang-btn').forEach(b => b.classList.remove('selected'));
+  el.classList.add('selected');
+  if (type === 'from') fromLang = lang;
+  else toLang = lang;
+}
+
+// ===== ROADMAP =====
+function selectLevel(level) {
+  selectedLevel = level;
+  ['beginner','intermediate','advanced'].forEach(l => {
+    document.getElementById('lvl-'+l).classList.remove('selected');
+  });
+  document.getElementById('lvl-'+level).classList.add('selected');
+}
+
+function selectGoal(goal) {
+  selectedGoal = goal;
+  ['security','dev','both'].forEach(g => {
+    document.getElementById('goal-'+g).classList.remove('selected');
+  });
+  document.getElementById('goal-'+goal).classList.add('selected');
+}
+
+// ===== PROJECTS =====
+function toggleSkill(el, skill) {
+  el.classList.toggle('selected');
+  if (el.classList.contains('selected')) {
+    selectedSkills.push(skill);
+  } else {
+    selectedSkills = selectedSkills.filter(s => s !== skill);
+  }
+}
+
+// ===== CHAT =====
+function quickSend(text) {
+  document.getElementById('chatInput').value = text;
+  sendChat();
+}
+
+async function sendChat() {
+  const input = document.getElementById('chatInput');
+  const text = input.value.trim();
+  if (!text) return;
+
+  const welcome = document.getElementById('welcomeCard');
+  if (welcome) welcome.remove();
+
+  addChatMsg(text, true);
+  input.value = '';
+  input.style.height = 'auto';
+  document.getElementById('sendBtn').disabled = true;
+
+  chatHistory.push({ role: 'user', content: text });
+  showTyping();
+
+  try {
+    const res = await fetch('/api/chat', {
+      method: 'POST',
+      
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-20250514',
+        max_tokens: 1000,
+        system: `أنت DevBot، خبير برمجة ذكي ودقيق جداً. قواعدك الصارمة:
+
+🎯 الدقة والجودة:
+- إجاباتك دقيقة 100% بدون أخطاء أبداً
+- لا تخمن أبداً - إذا ما تعرف قل ذلك بوضوح
+- تحقق من منطق الكود قبل تقديمه
+- اذكر دائماً سبب الخطأ وليس فقط الحل
+
+🐛 إصلاح الأخطاء بذكاء:
+- حلل الكود سطراً بسطر
+- اكشف السبب الجذري للخطأ
+- قدم الحل مع شرح لماذا هذا الحل يعمل
+- نبّه على أي أخطاء محتملة أخرى في نفس الكود
+
+💡 أسلوب الإجابة:
+- أجب بالعربية دائماً
+- كن مختصراً ومباشراً - لا حشو ولا تكرار
+- الكود دائماً بين triple backtick مع اسم اللغة
+- رتّب إجابتك: السبب ← الحل ← التفسير
+
+🔒 الحدود:
+- لا تساعد في اختراق أجهزة الآخرين أبداً
+- التعليم والدفاع فقط في الأمن السيبراني`,
+        messages: chatHistory
+      })
+    });
+
+    const data = await res.json();
+    removeTyping();
+    const reply = data.content?.[0]?.text || 'حدث خطأ، حاول مجدداً';
+    addChatMsg(reply, false);
+    chatHistory.push({ role: 'assistant', content: reply });
+  } catch(e) {
+    removeTyping();
+    addChatMsg('❌ خطأ في الاتصال، تأكد من الإنترنت وحاول مجدداً', false);
+  }
+
+  document.getElementById('sendBtn').disabled = false;
+}
+
+function addChatMsg(text, isUser) {
+  const container = document.getElementById('chatMessages');
+  const div = document.createElement('div');
+  div.className = `msg ${isUser ? 'user' : 'bot'}`;
+
+  const avatar = document.createElement('div');
+  avatar.className = 'msg-avatar';
+  avatar.textContent = isUser ? '👤' : '⚡';
+
+  const bubble = document.createElement('div');
+  bubble.className = 'msg-bubble';
+
+  if (!isUser) {
+    const formatted = text
+      .replace(/```(\w*)\n?([\s\S]*?)```/g, '<pre><code>$2</code></pre>')
+      .replace(/`([^`]+)`/g, '<code>$1</code>')
+      .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+      .replace(/\n/g, '<br>');
+    bubble.innerHTML = formatted;
+  } else {
+    bubble.textContent = text;
+  }
+
+  div.appendChild(avatar);
+  div.appendChild(bubble);
+  container.appendChild(div);
+  container.scrollTop = container.scrollHeight;
+}
+
+function showTyping() {
+  const container = document.getElementById('chatMessages');
+  const div = document.createElement('div');
+  div.id = 'typing';
+  div.className = 'typing-indicator';
+  div.innerHTML = `
+    <div class="msg-avatar" style="background:linear-gradient(135deg,var(--accent),var(--accent2));box-shadow:var(--glow);">⚡</div>
+    <div class="typing-bubble"><span></span><span></span><span></span></div>`;
+  container.appendChild(div);
+  container.scrollTop = container.scrollHeight;
+}
+
+function removeTyping() {
+  const t = document.getElementById('typing');
+  if (t) t.remove();
+}
+
+// ===== TOOLS =====
+async function runTool(tool) {
+  const prompts = {
+    convert: () => {
+      const code = document.getElementById('convertInput').value.trim();
+      if (!code) return null;
+      return `حوّل هذا الكود من ${fromLang} إلى ${toLang}. أعطني فقط الكود المحوّل بدون شرح:\n\`\`\`\n${code}\n\`\`\``;
+    },
+    debug: () => {
+      const code = document.getElementById('debugInput').value.trim();
+      const err = document.getElementById('errorInput').value.trim();
+      if (!code) return null;
+      return `اكشف الأخطاء في هذا الكود وأصلحها:\n\`\`\`\n${code}\n\`\`\`${err ? `\nرسالة الخطأ: ${err}` : ''}`;
+    },
+    explain: () => {
+      const code = document.getElementById('explainInput').value.trim();
+      if (!code) return null;
+      return `اشرح هذا الكود بالعربية خطوة بخطوة بأسلوب بسيط:\n\`\`\`\n${code}\n\`\`\``;
+    },
+    optimize: () => {
+      const code = document.getElementById('optimizeInput').value.trim();
+      if (!code) return null;
+      return `حسّن هذا الكود واجعله أسرع وأنظف مع شرح التحسينات:\n\`\`\`\n${code}\n\`\`\``;
+    }
+  };
+
+  const prompt = prompts[tool]();
+  if (!prompt) { alert('الصق كوداً أولاً!'); return; }
+
+  const btn = document.getElementById(tool + 'Btn');
+  const result = document.getElementById(tool + 'Result');
+  btn.disabled = true;
+  btn.textContent = '⏳ جاري المعالجة...';
+  result.classList.remove('visible');
+
+  try {
+    const res = await fetch('/api/chat', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-20250514',
+        max_tokens: 1000,
+        system: 'أنت مساعد برمجة خبير. أجب بدقة وإيجاز.',
+        messages: [{ role: 'user', content: prompt }]
+      })
+    });
+    const data = await res.json();
+    let text = data.content?.[0]?.text || 'حدث خطأ';
+    text = text.replace(/```\w*\n?/g, '').replace(/```/g, '').trim();
+    result.textContent = text;
+    result.classList.add('visible');
+    if (tool === 'explain') { result.style.direction = 'rtl'; result.style.textAlign = 'right'; result.style.fontFamily = "'Tajawal',sans-serif"; }
+  } catch(e) {
+    result.textContent = '❌ خطأ في الاتصال';
+    result.classList.add('visible');
+  }
+
+  btn.disabled = false;
+  btn.textContent = { convert:'🔄 حوّل الكود', debug:'🐛 اكشف الخطأ وأصلحه', explain:'📖 اشرح لي هذا الكود', optimize:'⚡ حسّن كودي' }[tool];
+}
+
+// ===== ROADMAP =====
+async function generateRoadmap() {
+  const btn = document.getElementById('generateBtn');
+  const content = document.getElementById('roadmapContent');
+  btn.disabled = true;
+  btn.textContent = '⏳ جاري البناء...';
+  content.classList.remove('visible');
+
+  const levelMap = { beginner: 'مبتدئ (لا يعرف شيئاً)', intermediate: 'متوسط (يعرف أساسيات البرمجة)', advanced: 'متقدم (يعرف البرمجة جيداً)' };
+  const goalMap = { security: 'الأمن السيبراني واختبار الاختراق', dev: 'تطوير تطبيقات الأندرويد', both: 'الأمن السيبراني وتطوير التطبيقات معاً' };
+
+  const prompt = `أنشئ خارطة تعلم مفصلة بالعربية لشخص مستواه: ${levelMap[selectedLevel]}، هدفه: ${goalMap[selectedGoal]}.
+
+الخارطة تشمل:
+- المرحلة 1: الأساسيات (مع مدة زمنية)
+- المرحلة 2: المتوسط (مع مدة زمنية)
+- المرحلة 3: المتقدم (مع مدة زمنية)
+- الأدوات والمصادر المجانية لكل مرحلة
+- ترتيب المواضيع بدقة بدون أخطاء
+
+اكتب بأسلوب منظم ومحفز.`;
+
+  try {
+    const res = await fetch('/api/chat', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-20250514',
+        max_tokens: 1000,
+        messages: [{ role: 'user', content: prompt }]
+      })
+    });
+    const data = await res.json();
+    let text = data.content?.[0]?.text || 'حدث خطأ';
+    text = text
+      .replace(/## (.*)/g, '<h3>$1</h3>')
+      .replace(/### (.*)/g, '<h4>$1</h4>')
+      .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+      .replace(/\n/g, '<br>');
+    content.innerHTML = text;
+    content.classList.add('visible');
+  } catch(e) {
+    content.innerHTML = '❌ خطأ في الاتصال';
+    content.classList.add('visible');
+  }
+
+  btn.disabled = false;
+  btn.textContent = '⚡ ابني خارطة التعلم الخاصة بي';
+}
+
+// ===== PROJECTS =====
+async function generateProjects() {
+  const btn = document.querySelector('#panel-projects .generate-btn');
+  const list = document.getElementById('projectsList');
+  btn.disabled = true;
+  btn.textContent = '⏳ جاري الاقتراح...';
+  list.innerHTML = '';
+
+  const skills = selectedSkills.length ? selectedSkills.join('، ') : 'البرمجة العامة';
+
+  const prompt = `اقترح 5 مشاريع عملية للتعلم في مجال: ${skills}.
+
+لكل مشروع أعطني بالتنسيق التالي (JSON array):
+[
+  {
+    "title": "اسم المشروع",
+    "desc": "وصف قصير للمشروع وما يعلمك",
+    "difficulty": "easy|medium|hard",
+    "tags": ["تقنية1", "تقنية2"]
+  }
+]
+
+أعطني فقط JSON صالح بدون أي نص آخر.`;
+
+  try {
+    const res = await fetch('/api/chat', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-20250514',
+        max_tokens: 1000,
+        system: 'أجب فقط بـ JSON صالح بدون أي نص إضافي أو backticks.',
+        messages: [{ role: 'user', content: prompt }]
+      })
+    });
+    const data = await res.json();
+    const text = data.content?.[0]?.text || '[]';
+    const projects = JSON.parse(text.replace(/```json?|```/g,'').trim());
+
+    const diffLabels = { easy: 'سهل', medium: 'متوسط', hard: 'صعب' };
+
+    projects.forEach(p => {
+      const card = document.createElement('div');
+      card.className = 'project-card';
+      card.innerHTML = `
+        <div class="project-top">
+          <div class="project-title">${p.title}</div>
+          <div class="difficulty ${p.difficulty}">${diffLabels[p.difficulty]}</div>
+        </div>
+        <div class="project-desc">${p.desc}</div>
+        <div class="project-tags">${(p.tags||[]).map(t=>`<span class="ptag">${t}</span>`).join('')}</div>`;
+      list.appendChild(card);
+    });
+  } catch(e) {
+    list.innerHTML = '<p style="color:var(--text3);font-size:13px;text-align:center;padding:20px;">❌ حدث خطأ، حاول مجدداً</p>';
+  }
+
+  btn.disabled = false;
+  btn.textContent = '💡 اقترح مشاريع مناسبة لي';
+}
+</script>
+</body>
+</html>
