@@ -7,6 +7,8 @@ module.exports = async function handler(req, res) {
   if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
 
   try {
+    console.log('Body received:', JSON.stringify(req.body));
+    
     const { messages, system, max_tokens } = req.body;
     
     const allMessages = [];
@@ -14,6 +16,8 @@ module.exports = async function handler(req, res) {
     if (messages && messages.length > 0) {
       messages.forEach(m => allMessages.push(m));
     }
+
+    console.log('Sending messages:', JSON.stringify(allMessages));
 
     const apiKey = process.env.OPENROUTER_API_KEY;
 
