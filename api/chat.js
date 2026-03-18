@@ -21,9 +21,8 @@ module.exports = async function handler(req, res) {
     }
 
     const apiKey = process.env.GEMINI_API_KEY;
-    console.log('Key exists:', !!apiKey);
 
-    const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=${apiKey}`, {
+    const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
